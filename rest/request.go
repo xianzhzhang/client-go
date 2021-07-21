@@ -734,6 +734,7 @@ func (r *Request) request(fn func(*http.Request, *http.Response)) error {
 			// This request should also be throttled with the client-internal throttler.
 			r.tryThrottle()
 		}
+		req.Header.Set("X-Remote-Extra-RequestID", r.ctx.Value("requestID").(string))
 		resp, err := client.Do(req)
 		updateURLMetrics(r, resp, err)
 		if err != nil {
